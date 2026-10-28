@@ -1,0 +1,554 @@
+<title>Kenta Coffee</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: 제품 중심 미니멀 타일 — 섹션마다 가운데 정렬 헤드라인 + 한 줄 설명 + 버튼 2개 + 큰 비주얼. 검정·흰색·밝은 회색 무대를 번갈아 쌓고, 그 순서로 브랜드 이야기를 전함. 섹션마다 의도적으로 고정된 밝기를 씀. */
+:root {
+  --white: #FFFFFF;
+  --mist: #F5F4F2;
+  --black: #0B0A09;
+  --tile-dk: #171513;
+  --ink: #1D1B19;
+  --ink-2: #6E6A66;
+  --ink-inv: #F5F2EE;
+  --ink-inv-2: #A39C95;
+  --copper: #A65A2A;
+  --copper-lt: #E4A875;
+  --line: #E3E0DC;
+  --line-dk: #2A2622;
+
+  --f: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+body { background: var(--white); color: var(--ink); font-family: var(--f); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: rgba(22, 20, 18, .82); }
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--copper-lt); outline-offset: 3px; border-radius: 4px; }
+.gut { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.in { max-width: 1040px; margin: 0 auto; }
+section { scroll-margin-top: 48px; overflow: hidden; }
+
+/* nav */
+.gnav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(22, 20, 18, .82); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); color: var(--ink-inv); }
+.gnav-in { height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: 13px; }
+.brand { font-weight: 700; font-size: 16px; letter-spacing: -0.02em; }
+.brand span { color: var(--copper-lt); }
+.gnav nav { display: flex; gap: 32px; }
+.gnav nav a, .gnav .shop { opacity: .82; }
+.gnav nav a:hover, .gnav .shop:hover { opacity: 1; }
+.menu-btn { display: none; background: none; border: 0; color: var(--ink-inv); font: 500 14px var(--f); padding: 8px 0; cursor: pointer; }
+.mnav { background: rgba(22, 20, 18, .96); }
+.mnav .in { display: flex; flex-direction: column; padding-block: 8px 20px; }
+.mnav a { padding: 14px 0; font-size: 20px; font-weight: 600; border-bottom: 1px solid var(--line-dk); }
+
+/* type + tile head */
+.sec { padding-block: 100px; }
+.head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+.eyebrow { font-size: clamp(17px, 2vw, 21px); font-weight: 600; color: var(--copper); }
+.h { font-size: clamp(40px, 7.4vw, 80px); line-height: 1.1; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
+.h2 { font-size: clamp(34px, 5.6vw, 64px); line-height: 1.1; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
+.sub { font-size: clamp(19px, 2.4vw, 26px); line-height: 1.38; font-weight: 500; color: var(--ink-2); max-width: 30em; text-wrap: balance; }
+.ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 14px; }
+.pill { display: inline-flex; align-items: center; justify-content: center; font: 400 17px var(--f); padding: 11px 22px; border-radius: 999px; background: var(--copper); color: #fff; border: 1px solid var(--copper); cursor: pointer; transition: filter .2s, background .2s, color .2s; }
+.pill:hover { filter: brightness(1.12); }
+.pill-ghost { background: transparent; color: var(--copper); }
+.pill-ghost:hover { background: var(--copper); color: #fff; filter: none; }
+.link { color: var(--copper); font-size: 17px; }
+.link:hover { text-decoration: underline; }
+.dark { background: var(--black); color: var(--ink-inv); }
+.dark .sub { color: var(--ink-inv-2); }
+.dark .eyebrow, .dark .link { color: var(--copper-lt); }
+.dark .pill-ghost { color: var(--copper-lt); border-color: var(--copper-lt); }
+.dark .pill-ghost:hover { background: var(--copper-lt); color: var(--black); }
+.mist { background: var(--mist); }
+.flag { display: inline-block; font-size: 12px; color: var(--ink-2); border: 1px dashed var(--ink-2); padding: 3px 10px; border-radius: 999px; }
+.dark .flag { color: var(--ink-inv-2); border-color: var(--ink-inv-2); }
+
+/* coffee bag render */
+.bag {
+  --w: 230px; --c: #2A2420; --hi: #4A403A; --lo: #141110; --lab: #F3EEE7; --labink: #1D1B19; --acc: var(--copper);
+  width: min(var(--w), 100%); aspect-ratio: 0.7; position: relative; flex: none;
+  border-radius: 10px 10px 28px 28px / 8px 8px 22px 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0) 18%, rgba(0,0,0,0) 80%, rgba(0,0,0,.25)),
+    linear-gradient(90deg, var(--lo) 0%, var(--c) 14%, var(--hi) 38%, var(--c) 62%, var(--lo) 100%);
+  box-shadow: 0 50px 60px -36px rgba(0,0,0,.6), 0 10px 20px -10px rgba(0,0,0,.3);
+  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.bag::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 9%; border-radius: 10px 10px 0 0 / 8px 8px 0 0;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 2px, rgba(0,0,0,.12) 2px 4px), linear-gradient(90deg, var(--lo), var(--hi) 40%, var(--lo));
+  border-bottom: 1px solid rgba(0,0,0,.25); }
+.bag::after { content: ""; position: absolute; top: 15%; left: 50%; width: 9%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.35), rgba(0,0,0,.35) 70%); box-shadow: inset 0 0 0 2px rgba(0,0,0,.2); }
+.bag .tag { position: absolute; left: 14%; right: 14%; top: 30%; bottom: 14%; background: var(--lab); color: var(--labink); border-radius: 3px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 12% 8% 10%; text-align: center; }
+.bag .tag .k { font-size: clamp(8px, 1.2vw, 11px); font-weight: 700; letter-spacing: .32em; margin-right: -.32em; }
+.bag .tag .n { font-size: clamp(15px, 2.2vw, 22px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.bag .tag .n small { display: block; font-size: .44em; font-weight: 500; letter-spacing: .12em; color: var(--acc); margin-top: 6px; text-transform: uppercase; }
+.bag .tag .w { font-size: clamp(8px, 1vw, 10px); letter-spacing: .14em; opacity: .7; }
+.bag .tag .bar { width: 26%; height: 2px; background: var(--acc); }
+.b-cream { --c: #EDE6DC; --hi: #FFFFFF; --lo: #BDB2A4; --lab: #0B0A09; --labink: #F5F2EE; --acc: #E4A875; }
+.b-daily { --c: #2E2723; --hi: #5A4E46; --lo: #171311; }
+.b-bright { --c: #C98A4E; --hi: #E2AA72; --lo: #92602F; --lab: #FFF9F1; }
+.b-yirga { --c: #8E9A7A; --hi: #ABB698; --lo: #616B51; --lab: #FBFAF4; --acc: #5A6646; }
+.b-huila { --c: #A9533A; --hi: #C6705A; --lo: #763522; --lab: #FFF6F0; --acc: #8E3F28; }
+
+/* espresso cup render */
+.saucer { width: min(380px, 70vw); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; position: relative;
+  background: radial-gradient(circle at 42% 38%, #2C2926, #1A1816 60%, #121110); box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 60px 80px -40px rgba(0,0,0,.9); }
+.cup { width: 64%; aspect-ratio: 1; border-radius: 50%; position: relative; display: grid; place-items: center;
+  background: radial-gradient(circle at 40% 35%, #FAF7F2, #E4DED6 70%, #CFC7BD); box-shadow: 0 16px 30px -8px rgba(0,0,0,.6); }
+.cup::after { content: ""; position: absolute; right: -16%; top: 50%; width: 22%; height: 13%; transform: translateY(-50%); border-radius: 0 40px 40px 0; background: linear-gradient(180deg, #F2EEE8, #CFC7BD); box-shadow: 0 6px 10px -4px rgba(0,0,0,.5); }
+.crema { width: 80%; aspect-ratio: 1; border-radius: 50%; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 48% 46%, #D9A066 0 14%, #B9773E 30%, #8A4F23 55%, #4B2712 82%, #2E170B 100%);
+  box-shadow: inset 0 0 0 3px rgba(0,0,0,.35), inset 0 6px 16px rgba(0,0,0,.4); }
+.crema::before { content: ""; position: absolute; inset: -20%; background: conic-gradient(from 0deg, transparent 0 20%, rgba(255,226,180,.22) 28%, transparent 36% 70%, rgba(255,226,180,.14) 78%, transparent 86%); animation: swirl 14s linear infinite; mix-blend-mode: screen; }
+.crema::after { content: ""; position: absolute; top: 18%; left: 22%; width: 26%; height: 12%; border-radius: 50%; background: rgba(255,255,255,.18); filter: blur(4px); transform: rotate(-28deg); }
+@keyframes swirl { to { transform: rotate(360deg); } }
+
+/* hero */
+.hero { padding-block: 96px 0; position: relative; }
+.hero::before { content: ""; position: absolute; left: 50%; top: 55%; width: 1200px; height: 900px; transform: translateX(-50%);
+  background: radial-gradient(ellipse 42% 48% at 50% 50%, rgba(228,168,117,.18), transparent 70%); pointer-events: none; }
+.hero .head { position: relative; }
+.grad { background: linear-gradient(100deg, #F6DDBB 10%, #D9925A 55%, #B5662F 95%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stage { position: relative; display: flex; justify-content: center; align-items: flex-end; margin-top: 72px; }
+.stage .bag { margin-bottom: -64px; }
+.stage .bag.main { --w: 300px; z-index: 1; }
+.stage .bag.side { --w: 210px; opacity: .5; margin-left: -40px; margin-right: -40px; transform: scale(.9); transform-origin: bottom center; }
+
+/* story: full-bleed rounded stage with cup */
+.story-visual { margin-top: 64px; border-radius: 32px; background: radial-gradient(ellipse 60% 70% at 50% 45%, #2A2622, #0E0C0B 75%); aspect-ratio: 16 / 9; max-width: 100%; display: grid; place-items: center; }
+.story-visual .saucer { width: min(420px, 62%); }
+
+/* values bento */
+.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; }
+.tile { background: var(--white); border-radius: 28px; padding: 44px 32px 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; overflow: hidden; min-width: 0; }
+.tile .en { font-size: 15px; font-weight: 600; color: var(--copper); }
+.tile h3 { font-size: clamp(26px, 2.8vw, 32px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
+.tile p { font-size: 16px; color: var(--ink-2); line-height: 1.55; max-width: 20em; }
+.tile .art { margin-top: 28px; height: 190px; width: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.tile .art svg { height: 100%; width: auto; max-width: 100%; display: block; }
+
+/* origin numbers */
+.numbers { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 72px; }
+.numbers div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 8px 12px; border-left: 1px solid var(--line-dk); min-width: 0; }
+.numbers div:first-child { border-left: 0; }
+.numbers strong { font-size: clamp(32px, 4.4vw, 52px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.numbers b { font-size: 17px; font-weight: 600; margin-top: 6px; }
+.numbers span { font-size: 14px; color: var(--ink-inv-2); line-height: 1.5; }
+
+/* coffee lineup */
+.lineup { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 28px; margin-top: 76px; }
+.item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; min-width: 0; }
+.item .bag { --w: 180px; margin-bottom: 30px; box-shadow: 0 40px 50px -34px rgba(0,0,0,.45), 0 8px 16px -10px rgba(0,0,0,.2); }
+.item:hover .bag { transform: translateY(-8px); }
+.item h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; }
+.item .origin { font-size: 13px; color: var(--ink-2); }
+.item .notes { font-size: 15px; margin-top: 4px; }
+.dots { display: flex; gap: 4px; align-items: center; margin-top: 6px; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.dots i.on { background: var(--copper); }
+.dots span { font-size: 12px; color: var(--ink-2); margin-left: 6px; }
+
+/* roaster */
+.roaster-visual { margin-top: 64px; border-radius: 32px; aspect-ratio: 21 / 9; max-width: 100%; background: linear-gradient(160deg, #2A2420, #0F0D0B); display: grid; place-items: center; text-align: center; color: var(--ink-inv-2); font-size: 15px; padding: 24px; }
+
+/* for cafés */
+.offer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; }
+.offer .tile { background: var(--tile-dk); padding: 40px 30px; }
+.offer .tile p { color: var(--ink-inv-2); }
+.offer .tile .en { color: var(--copper-lt); }
+.offer .num { font-size: clamp(40px, 5vw, 56px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; margin-bottom: 10px; }
+.places { margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.places h3 { font-size: 15px; font-weight: 600; color: var(--ink-inv-2); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.places ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.places li span { display: block; font-size: 13px; font-weight: 400; color: var(--ink-inv-2); letter-spacing: 0; }
+
+/* contact */
+.contact-box { max-width: 720px; margin: 56px auto 0; display: flex; flex-direction: column; gap: 24px; }
+.info { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.info div { background: var(--mist); border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.info dt { font-size: 13px; color: var(--ink-2); }
+.info dd { margin: 0; font-size: 16px; font-weight: 500; user-select: all; overflow-wrap: anywhere; }
+form.ask { background: var(--mist); border-radius: 28px; padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+.field label, .field legend { font-size: 14px; font-weight: 600; }
+.field label small { color: var(--copper); font-weight: 500; }
+input, textarea { font: 16px var(--f); color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 13px 14px; width: 100%; }
+input:focus, textarea:focus { outline: none; border-color: var(--copper); box-shadow: 0 0 0 3px rgba(166,90,42,.15); }
+textarea { resize: vertical; min-height: 120px; }
+fieldset { border: 0; padding: 0; margin: 0; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.checks label { display: inline-flex; align-items: center; gap: 6px; font-weight: 400; font-size: 14px; padding: 8px 14px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
+.checks input { width: auto; accent-color: var(--copper); }
+.form-foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+.form-msg { font-size: 14px; color: #3F7A4A; }
+.form-msg.err { color: var(--copper); }
+
+/* footer */
+.foot { background: var(--mist); color: var(--ink-2); font-size: 12px; padding-block: 28px 36px; }
+.foot .in { display: flex; flex-direction: column; gap: 14px; }
+.foot-shop { font-size: 13px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.foot-shop a { color: var(--copper); }
+.foot-shop a:hover { text-decoration: underline; }
+.foot-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.foot-top .brand { color: var(--ink); }
+.foot-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.foot-links a:hover { color: var(--ink); }
+
+/* responsive */
+@media (max-width: 900px) {
+  .bento, .offer { grid-template-columns: 1fr; }
+  .numbers { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+  .numbers div { border-left: 0; }
+  .numbers div:last-child { grid-column: 1 / -1; }
+  .info { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .gnav nav, .gnav .shop { display: none; }
+  .menu-btn { display: inline-block; }
+  .sec { padding-block: 72px; }
+  .hero { padding-top: 64px; }
+  .stage { margin-top: 52px; }
+  .stage .bag.side { display: none; }
+  .stage .bag.main { --w: 220px; }
+  .story-visual { aspect-ratio: 1; border-radius: 24px; margin-top: 48px; }
+  .story-visual .saucer { width: 78%; }
+  .lineup { grid-template-columns: 1fr 1fr; gap: 52px 16px; margin-top: 56px; }
+  .item .bag { --w: 140px; margin-bottom: 22px; }
+  .roaster-visual { aspect-ratio: 4 / 3; border-radius: 24px; }
+  form.ask { grid-template-columns: 1fr; padding: 24px 20px; }
+}
+</style>
+
+<header class="gnav">
+  <div class="in gut gnav-in">
+    <a class="brand" href="#top">Kenta<span>.</span></a>
+    <nav aria-label="주요 메뉴">
+      <a href="#story">Story</a>
+      <a href="#origin">Origin</a>
+      <a href="#coffee">Coffee</a>
+      <a href="#roaster">Roaster</a>
+      <a href="#cafes">For Cafés</a>
+    </nav>
+    <a class="shop" href="https://smartstore.naver.com/" target="_blank" rel="noopener">Shop</a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="mnav">메뉴</button>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <div class="in gut">
+      <a href="#story">Story</a>
+      <a href="#origin">Origin</a>
+      <a href="#coffee">Coffee</a>
+      <a href="#roaster">Roaster</a>
+      <a href="#cafes">For Cafés</a>
+      <a href="https://smartstore.naver.com/" target="_blank" rel="noopener">Shop</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero dark gut">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">Kenta Coffee Roastery</p>
+        <h1 class="h"><span class="grad">매일 아침의 첫 잔,<br>그 원두를 볶습니다</span></h1>
+        <p class="sub">하루를 여는 한 잔이 늘 같은 자리에 있도록.</p>
+        <div class="ctas"><a class="pill" href="#story">이야기 보기</a><a class="pill pill-ghost" href="https://smartstore.naver.com/" target="_blank" rel="noopener">Shop ›</a></div>
+      </div>
+      <div class="stage">
+        <div class="bag b-daily side" aria-hidden="true"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Daily<small>House Blend</small></span><span class="w">BLEND</span></div></div>
+        <div class="bag b-cream main" role="img" aria-label="Kenta Coffee 원두 봉투"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Coffee<small>Roastery</small></span><span class="w">ROASTED TO ORDER</span></div></div>
+        <div class="bag b-huila side" aria-hidden="true"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Huila<small>Single Origin</small></span><span class="w">COLOMBIA</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="sec gut" id="story">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">Story</p>
+        <h2 class="h2">화려한 한 잔보다,<br>매일의 한 잔.</h2>
+        <p class="sub">커피는 결국 누군가의 하루에 닿습니다. 그래서 Kenta는 내일 아침에도 같은 맛을 내는 커피를 볶습니다.</p>
+        <div class="ctas"><a class="link" href="#roaster">로스터 이야기 ›</a></div>
+      </div>
+      <div class="story-visual">
+        <div class="saucer" role="img" aria-label="위에서 내려다본 에스프레소 한 잔">
+          <div class="cup"><div class="crema"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="sec mist gut" id="values">
+    <div class="in">
+      <div class="head">
+        <h2 class="h2">세 가지만 지킵니다.</h2>
+        <p class="sub">좋은 생두, 정확한 불, 그리고 매일 마셔도 좋은 균형.</p>
+      </div>
+      <div class="bento">
+        <article class="tile">
+          <span class="en">Origin</span>
+          <h3>정직한 생두</h3>
+          <p>산지와 농장, 가공 방식을 알 수 있는 생두만 씁니다.</p>
+          <div class="art">
+            <svg viewBox="0 0 120 160" aria-hidden="true">
+              <defs><radialGradient id="bf1" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#8A5530"/><stop offset=".45" stop-color="#5A3218"/><stop offset="1" stop-color="#24120A"/></radialGradient></defs>
+              <g transform="rotate(-20 60 90)">
+                <ellipse cx="60" cy="90" rx="46" ry="66" fill="url(#bf1)"/>
+                <ellipse cx="46" cy="60" rx="12" ry="20" fill="#FFFFFF" opacity=".10" transform="rotate(-18 46 60)"/>
+                <path d="M62,28 C42,58 78,120 58,154" fill="none" stroke="#1A0C05" stroke-width="6" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </article>
+        <article class="tile">
+          <span class="en">Craft</span>
+          <h3>정확한 불</h3>
+          <p>모든 배치의 로스팅 곡선을 기록하고, 같은 곡선으로 다시 볶습니다.</p>
+          <div class="art">
+            <svg viewBox="0 0 220 160" aria-hidden="true">
+              <line x1="10" y1="150" x2="210" y2="150" stroke="#E3E0DC" stroke-width="2"/>
+              <line x1="164" y1="20" x2="164" y2="150" stroke="#E3E0DC" stroke-width="2" stroke-dasharray="4 5"/>
+              <path d="M10,70 C22,128 34,132 46,132 C80,132 96,96 118,78 S150,52 164,46 S192,36 206,32" fill="none" stroke="#A65A2A" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="206" cy="32" r="6" fill="#A65A2A"/>
+            </svg>
+          </div>
+        </article>
+        <article class="tile">
+          <span class="en">Daily</span>
+          <h3>매일의 한 잔</h3>
+          <p>특별한 날보다 평범한 아침을 위해, 질리지 않는 균형을 찾습니다.</p>
+          <div class="art">
+            <svg viewBox="0 0 180 160" aria-hidden="true">
+              <ellipse cx="90" cy="148" rx="78" ry="10" fill="#E3E0DC"/>
+              <path d="M38,60 L142,60 L132,138 C130,146 124,148 118,148 L62,148 C56,148 50,146 48,138 Z" fill="#FAF7F2" stroke="#E3E0DC" stroke-width="2"/>
+              <path d="M142,76 C166,76 166,116 136,116" fill="none" stroke="#E3E0DC" stroke-width="8" stroke-linecap="round"/>
+              <ellipse cx="90" cy="60" rx="52" ry="9" fill="#8A4F23"/>
+              <ellipse cx="84" cy="58" rx="20" ry="3.5" fill="#D9A066" opacity=".6"/>
+              <path d="M72,40 C64,30 80,22 72,10 M92,42 C84,30 100,22 92,8 M112,40 C104,30 120,22 112,10" fill="none" stroke="#D8D2CA" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Origin -->
+  <section class="sec dark gut" id="origin">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">Origin to Cup</p>
+        <h2 class="h2">농장에서<br>당신의 잔까지.</h2>
+        <p class="sub">한 잔이 만들어지기까지, Kenta가 직접 확인하는 다섯 순간.</p>
+      </div>
+      <div class="numbers">
+        <div><strong>1,600m</strong><b>산지</b><span>높은 곳에서 천천히 익은 커피</span></div>
+        <div><strong>G1</strong><b>선별</b><span>결점두를 걸러낸 최상위 등급</span></div>
+        <div><strong class="grad">210°C</strong><b>로스팅</b><span>1차 크랙 후 2분, 정확히 멈춤</span></div>
+        <div><strong>5일</strong><b>휴지</b><span>맛이 자리 잡을 때까지 기다림</span></div>
+        <div><strong>1잔</strong><b>당신의 아침</b><span>모든 과정이 한 잔에 담김</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coffee -->
+  <section class="sec gut" id="coffee">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">This Season</p>
+        <h2 class="h2">이번 계절의 커피.</h2>
+        <p class="sub">늘 곁에 있는 두 가지 블렌드와, 계절마다 바뀌는 싱글 오리진.</p>
+        <div class="ctas"><a class="pill" href="https://smartstore.naver.com/" target="_blank" rel="noopener">스마트스토어에서 보기</a><a class="link" href="#cafes">카페 납품 안내 ›</a></div>
+      </div>
+      <div class="lineup">
+        <div class="item">
+          <div class="bag b-daily" role="img" aria-label="Kenta Daily 원두 봉투"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Daily<small>House Blend</small></span><span class="w">BLEND</span></div></div>
+          <h3>켄타 데일리</h3>
+          <p class="origin">브라질 · 콜롬비아</p>
+          <p class="notes">다크 초콜릿, 구운 견과</p>
+          <div class="dots" aria-label="로스팅 5단계 중 4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><span>미디엄 다크</span></div>
+        </div>
+        <div class="item">
+          <div class="bag b-bright" role="img" aria-label="Kenta Bright 원두 봉투"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Bright<small>Signature</small></span><span class="w">BLEND</span></div></div>
+          <h3>켄타 브라이트</h3>
+          <p class="origin">에티오피아 · 케냐 · 과테말라</p>
+          <p class="notes">자몽, 홍차, 꿀</p>
+          <div class="dots" aria-label="로스팅 5단계 중 2"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><span>라이트 미디엄</span></div>
+        </div>
+        <div class="item">
+          <div class="bag b-yirga" role="img" aria-label="에티오피아 예가체프 원두 봉투"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Yirga<small>Ethiopia</small></span><span class="w">SINGLE ORIGIN</span></div></div>
+          <h3>예가체프 G1</h3>
+          <p class="origin">에티오피아 코체레 · 2,000m</p>
+          <p class="notes">재스민, 레몬, 복숭아</p>
+          <div class="dots" aria-label="로스팅 5단계 중 1"><i class="on"></i><i></i><i></i><i></i><i></i><span>라이트</span></div>
+        </div>
+        <div class="item">
+          <div class="bag b-huila" role="img" aria-label="콜롬비아 우일라 원두 봉투"><div class="tag"><span class="k">KENTA</span><span class="bar"></span><span class="n">Huila<small>Colombia</small></span><span class="w">SINGLE ORIGIN</span></div></div>
+          <h3>우일라 수프리모</h3>
+          <p class="origin">콜롬비아 피탈리토 · 1,600m</p>
+          <p class="notes">사과, 밀크 초콜릿, 흑설탕</p>
+          <div class="dots" aria-label="로스팅 5단계 중 3"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><span>미디엄</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roaster -->
+  <section class="sec mist gut" id="roaster">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">The Roaster</p>
+        <h2 class="h2">좋은 커피는 놀라움이 아니라<br>믿음에서 옵니다.</h2>
+        <p class="sub">Kenta라는 이름에 담긴 의미와 이 브랜드가 시작된 이야기가 들어갈 자리입니다.</p>
+        <span class="flag">시안용 문구 · 실제 이야기로 교체</span>
+      </div>
+      <div class="roaster-visual">로스터 사진 자리<br>로스팅 기계 앞에 선 모습, 자연광 추천</div>
+    </div>
+  </section>
+
+  <!-- For Cafés -->
+  <section class="sec dark gut" id="cafes">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">For Cafés</p>
+        <h2 class="h2">당신의 매장에서도,<br>같은 아침을.</h2>
+        <p class="sub">Kenta의 원두를 쓰는 카페와는 원두 이상의 것을 함께 나눕니다.</p>
+        <div class="ctas"><a class="pill" href="#contact">함께하기</a><a class="pill pill-ghost" href="#contact">샘플 요청 ›</a></div>
+      </div>
+      <div class="offer">
+        <article class="tile">
+          <span class="en">Recipe</span>
+          <h3>매장에 맞춘 레시피</h3>
+          <p>매장의 머신과 메뉴에 맞춰 추출 레시피를 함께 잡습니다.</p>
+        </article>
+        <article class="tile">
+          <span class="en">Training</span>
+          <h3>바리스타 교육</h3>
+          <p>오픈 전이나 직원이 바뀔 때, 같은 맛을 내는 법을 나눕니다.</p>
+        </article>
+        <article class="tile">
+          <span class="en">Delivery</span>
+          <h3>로스팅 일정에 맞춘 배송</h3>
+          <p>숙성 기간에 맞춰 가장 맛있을 때 매장에 도착하게 보냅니다.</p>
+        </article>
+      </div>
+      <div class="places">
+        <h3>Kenta를 만날 수 있는 곳 <span class="flag">시안용 예시</span></h3>
+        <ul>
+          <li>카페 ○○○<span>서울 연남동</span></li>
+          <li>○○ 베이커리<span>성남 분당</span></li>
+          <li>○○ 라운지<span>서울 역삼동</span></li>
+          <li>커피바 ○○<span>서울 성수동</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="sec gut" id="contact">
+    <div class="in">
+      <div class="head">
+        <p class="eyebrow">Contact</p>
+        <h2 class="h2">이야기를 나눠요.</h2>
+        <p class="sub">납품, 샘플, 협업, 무엇이든 편하게 남겨주세요.</p>
+      </div>
+      <div class="contact-box">
+        <dl class="info">
+          <div><dt>전화</dt><dd>010-0000-0000</dd></div>
+          <div><dt>이메일</dt><dd>hello@kentacoffee.kr</dd></div>
+          <div><dt>운영</dt><dd>평일 09:00–18:00</dd></div>
+        </dl>
+        <form class="ask" id="ask-form" novalidate>
+          <div class="field">
+            <label for="f-name">이름 <small>필수</small></label>
+            <input id="f-name" name="name" required placeholder="홍길동">
+          </div>
+          <div class="field">
+            <label for="f-phone">연락처 <small>필수</small></label>
+            <input id="f-phone" name="phone" type="tel" required placeholder="010-0000-0000">
+          </div>
+          <div class="field full">
+            <label for="f-shop">매장명</label>
+            <input id="f-shop" name="shop" placeholder="매장이 있다면 적어주세요">
+          </div>
+          <fieldset class="field full">
+            <legend>문의 내용</legend>
+            <div class="checks">
+              <label><input type="checkbox" id="c-ws" name="type" value="wholesale">원두 납품</label>
+              <label><input type="checkbox" id="c-sample" name="type" value="sample">샘플 요청</label>
+              <label><input type="checkbox" id="c-collab" name="type" value="collab">협업 · 제휴</label>
+              <label><input type="checkbox" id="c-etc" name="type" value="etc">기타</label>
+            </div>
+          </fieldset>
+          <div class="field full">
+            <label for="f-msg">메시지</label>
+            <textarea id="f-msg" name="msg" placeholder="하고 싶은 이야기를 자유롭게 적어주세요."></textarea>
+          </div>
+          <div class="form-foot">
+            <button class="pill" type="submit">보내기</button>
+            <span class="form-msg" id="form-msg" role="status"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot gut">
+  <div class="in">
+    <p class="foot-shop">집에서 즐기는 Kenta는 <a href="https://smartstore.naver.com/" target="_blank" rel="noopener">스마트스토어</a>에서 만나보세요.</p>
+    <div class="foot-top">
+      <span class="brand">Kenta<span>.</span></span>
+      <div class="foot-links">
+        <a href="#story">Story</a>
+        <a href="#coffee">Coffee</a>
+        <a href="#cafes">For Cafés</a>
+        <a href="#contact">Contact</a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <p>상호 Kenta Coffee · 대표 ○○○ · 사업자등록번호 000-00-00000 · 주소를 입력해주세요</p>
+    <p>Copyright © 2026 Kenta Coffee. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('menu-btn');
+  var nav = document.getElementById('mnav');
+  function setOpen(open) {
+    nav.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? '닫기' : '메뉴';
+  }
+  btn.addEventListener('click', function () { setOpen(nav.hidden); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+
+  var form = document.getElementById('ask-form');
+  var msg = document.getElementById('form-msg');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var missing = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (el) { return !el.value.trim(); });
+    if (missing.length) {
+      msg.className = 'form-msg err';
+      msg.textContent = '이름과 연락처를 입력해주세요.';
+      missing[0].focus();
+      return;
+    }
+    msg.className = 'form-msg';
+    msg.textContent = '메시지를 받았습니다. (시안이라 실제로 전송되지는 않아요)';
+    form.reset();
+  });
+})();
+</script>
