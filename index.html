@@ -202,6 +202,12 @@ fieldset { border: 0; padding: 0; margin: 0; }
 .form-foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
 .form-msg { font-size: 14px; color: #3F7A4A; }
 .form-msg.err { color: var(--copper); }
+.consent-check { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
+.consent-check input { width: 20px; height: 20px; flex: none; accent-color: var(--copper); }
+.consent-check small { color: var(--copper); font-weight: 500; }
+.consent-note { font-size: 13px; line-height: 1.6; color: var(--ink-2); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.pill:disabled { opacity: .6; cursor: wait; filter: none; }
 
 /* footer */
 .foot { background: var(--mist); color: var(--ink-2); font-size: 12px; padding-block: 28px 36px; }
@@ -531,10 +537,18 @@ fieldset { border: 0; padding: 0; margin: 0; }
           </fieldset>
           <div class="field full">
             <label for="f-msg">메시지</label>
-            <textarea id="f-msg" name="msg" placeholder="하고 싶은 이야기를 자유롭게 적어주세요."></textarea>
+            <textarea id="f-msg" name="msg" maxlength="2000" placeholder="하고 싶은 이야기를 자유롭게 적어주세요."></textarea>
+          </div>
+          <div class="field full consent">
+            <label class="consent-check"><input type="checkbox" id="f-consent" name="consent" value="yes" required>개인정보 수집·이용에 동의합니다 <small>필수</small></label>
+            <p class="consent-note">수집 항목: 이름, 연락처, 매장명, 문의 내용 · 목적: 문의 답변과 상담 · 보관: 문의 처리 후 1년 뒤 파기. 동의하지 않으면 문의를 보낼 수 없습니다.</p>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="f-website">웹사이트</label>
+            <input id="f-website" name="website" tabindex="-1" autocomplete="off">
           </div>
           <div class="form-foot">
-            <button class="pill" type="submit">보내기</button>
+            <button class="pill" type="submit" id="f-submit">보내기</button>
             <span class="form-msg" id="form-msg" role="status"></span>
           </div>
         </form>
@@ -573,20 +587,78 @@ fieldset { border: 0; padding: 0; margin: 0; }
   btn.addEventListener('click', function () { setOpen(nav.hidden); });
   nav.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
 
+  // Google Apps Script 웹 앱 주소 (apps-script/Code.gs 를 배포하면 나오는 .../exec 주소)
+  var FORM_ENDPOINT = '';
+
   var form = document.getElementById('ask-form');
   var msg = document.getElementById('form-msg');
+  var submit = document.getElementById('f-submit');
+  var ERRORS = {
+    missing: '이름과 연락처를 입력해주세요.',
+    phone: '연락처를 숫자로 정확히 입력해주세요.',
+    consent: '개인정보 수집·이용에 동의해주세요.',
+    too_many: '방금 보내신 문의가 있어요. 1분 뒤에 다시 시도해주세요.',
+    server: '전송 중 문제가 생겼어요. 잠시 뒤 다시 시도하거나 전화로 연락해주세요.'
+  };
+  function show(text, isError) {
+    msg.className = isError ? 'form-msg err' : 'form-msg';
+    msg.textContent = text;
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var missing = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (el) { return !el.value.trim(); });
-    if (missing.length) {
-      msg.className = 'form-msg err';
-      msg.textContent = '이름과 연락처를 입력해주세요.';
-      missing[0].focus();
+    var name = form.elements.name.value.trim();
+    var phone = form.elements.phone.value.trim();
+    if (!name || !phone) {
+      show(ERRORS.missing, true);
+      (name ? form.elements.phone : form.elements.name).focus();
       return;
     }
-    msg.className = 'form-msg';
-    msg.textContent = '메시지를 받았습니다. (시안이라 실제로 전송되지는 않아요)';
-    form.reset();
+    if (!/^[0-9+\-() ]{8,20}$/.test(phone)) {
+      show(ERRORS.phone, true);
+      form.elements.phone.focus();
+      return;
+    }
+    if (!form.elements.consent.checked) {
+      show(ERRORS.consent, true);
+      form.elements.consent.focus();
+      return;
+    }
+    if (!FORM_ENDPOINT) {
+      show('아직 문의 접수가 연결되지 않았어요. 전화나 이메일로 연락해주세요.', true);
+      return;
+    }
+
+    var types = Array.prototype.filter.call(form.querySelectorAll('input[name="type"]'), function (el) { return el.checked; })
+      .map(function (el) { return el.parentNode.textContent.trim(); });
+    var body = new URLSearchParams({
+      name: name,
+      phone: phone,
+      shop: form.elements.shop.value.trim(),
+      types: types.join(', '),
+      message: form.elements.msg.value.trim(),
+      consent: 'yes',
+      website: form.elements.website.value
+    });
+
+    submit.disabled = true;
+    submit.textContent = '보내는 중…';
+    show('', false);
+    fetch(FORM_ENDPOINT, { method: 'POST', body: body })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.ok) {
+          show('문의를 받았습니다. 영업일 기준 이틀 안에 연락드릴게요.', false);
+          form.reset();
+        } else {
+          show(ERRORS[data.error] || ERRORS.server, true);
+        }
+      })
+      .catch(function () { show(ERRORS.server, true); })
+      .then(function () {
+        submit.disabled = false;
+        submit.textContent = '보내기';
+      });
   });
 })();
 </script>
