@@ -1,3 +1,10 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#161412">
+<meta name="description" content="매일 아침의 첫 잔, 그 원두를 볶습니다. 카페를 위한 로스터리 Kenta Coffee.">
 <title>Kenta Coffee</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +30,10 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; }
+img, svg { max-width: 100%; }
+[hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
 body { background: var(--white); color: var(--ink); font-family: var(--f); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: rgba(22, 20, 18, .82); }
@@ -226,8 +236,36 @@ fieldset { border: 0; padding: 0; margin: 0; }
   .item .bag { --w: 140px; margin-bottom: 22px; }
   .roaster-visual { aspect-ratio: 4 / 3; border-radius: 24px; }
   form.ask { grid-template-columns: 1fr; padding: 24px 20px; }
+  .bento, .offer, .lineup, .numbers, .contact-box { margin-top: 48px; }
+  .tile { padding: 36px 24px 0; }
+  .offer .tile { padding: 32px 24px; }
+  .places ul { font-size: 17px; gap: 12px 22px; }
+}
+@media (max-width: 480px) {
+  .h { font-size: clamp(32px, 9.4vw, 40px); }
+  .h2 { font-size: clamp(28px, 8.2vw, 34px); }
+  .sub { font-size: 17px; }
+  .eyebrow { font-size: 15px; }
+  .ctas { gap: 10px; }
+  .pill { font-size: 16px; padding: 12px 20px; min-height: 44px; }
+  .link { font-size: 16px; }
+  .head { gap: 10px; }
+  .sec { padding-block: 64px; }
+  .stage .bag.main { --w: 200px; }
+  .numbers strong { font-size: 30px; }
+  .numbers span { font-size: 13px; }
+  .lineup { gap: 44px 12px; }
+  .item .bag { --w: 124px; }
+  .item h3 { font-size: 18px; }
+  .item .notes { font-size: 14px; }
+  .tile h3 { font-size: 24px; }
+  .tile .art { height: 150px; }
+  .info div { padding: 14px 18px; }
+  .mnav a { font-size: 18px; padding: 16px 0; }
 }
 </style>
+</head>
+<body>
 
 <header class="gnav">
   <div class="in gut gnav-in">
@@ -552,3 +590,5 @@ fieldset { border: 0; padding: 0; margin: 0; }
   });
 })();
 </script>
+</body>
+</html>

@@ -1,3 +1,9 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBFAF9">
 <title>Kenta Coffee 메인 시안</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +27,10 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; }
+img, svg { max-width: 100%; }
+[hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
 body { background: var(--white); color: var(--ink); font-family: var(--f); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: rgba(251, 250, 249, .86); }
@@ -167,7 +176,19 @@ section.hero { scroll-margin-top: 48px; overflow: hidden; }
   #s2 .bag.side { display: none; }
   .specs { grid-template-columns: 1fr; gap: 24px; text-align: center; }
 }
+@media (max-width: 480px) {
+  .h { font-size: clamp(32px, 9.4vw, 40px); }
+  .sub { font-size: 17px; }
+  .eyebrow { font-size: 15px; }
+  .pill { font-size: 16px; padding: 12px 20px; min-height: 44px; }
+  .label-in { font-size: 13px; gap: 8px; }
+  #s4 .row { gap: 40px 12px; }
+  #s4 .bag { --w: 124px; }
+  #s4 .item h3 { font-size: 18px; }
+}
 </style>
+</head>
+<body>
 
 <header class="gnav">
   <div class="gnav-in gut">
@@ -317,3 +338,5 @@ section.hero { scroll-margin-top: 48px; overflow: hidden; }
 </main>
 
 <footer class="foot gut">Kenta Coffee 메인 이미지 시안 · 이미지는 실제 사진 대신 그래픽으로 표현했습니다. 촬영 사진으로 교체하면 훨씬 좋아집니다.</footer>
+</body>
+</html>
